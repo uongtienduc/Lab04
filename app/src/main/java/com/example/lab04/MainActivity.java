@@ -7,32 +7,26 @@ import com.example.lab04.ItemModel;
 import java.util.ArrayList;
 import java.util.List;
 import android.os.Bundle;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private List<ItemModel> listItem;
-    private ListView listView;
+    ListView list;
+    ArrayList<ItemModel> arrayList;
+    Adapter Adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        listView = (ListView)findViewById(R.id.idListView);
-        listItem = new ArrayList<>();
+        list = findViewById(R.id.idListView);
 
-        listItem.add(new ItemModel(1, "Lập Trình Java"));
-        listItem.add(new ItemModel(2, "Lập Trình Java"));
-        listItem.add(new ItemModel(3, "Lập Trình Java"));
-        listItem.add(new ItemModel(4, "Lập Trình Java"));
-        listItem.add(new ItemModel(5, "Lập Trình Java"));
-        listItem.add(new ItemModel(6, "Lập Trình Java"));
+        arrayList = ItemModel.initItem();
+        Adapter = new Adapter(MainActivity.this,R.layout.item_custom_list_view,arrayList);
 
-
-        Adapter adapter = new Adapter(this, R.id.tv_item, listItem);
-
-        listView.setAdapter(adapter);
+        list.setAdapter(Adapter);
 
 
     }

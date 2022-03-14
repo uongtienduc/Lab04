@@ -14,30 +14,31 @@ import android.widget.Toast;
 import com.example.lab04.R;
 import com.example.lab04.ItemModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Adapter extends BaseAdapter {
     private Context context;
     private int idLayout;
-    private List<ItemModel> listItem;
+    private ArrayList<ItemModel> arrayList;
     private int positionSelect = -1;
 
 
-    public Adapter(Context context, int idLayout, List<ItemModel> listItem) {
+    public Adapter(Context context, int idLayout, ArrayList<ItemModel> objects) {
         this.context = context;
         this.idLayout = idLayout;
-        this.listItem = listItem;
+        this.arrayList = objects;
     }
 
 
     @Override
     public int getCount() {
-        return listItem.size();
+        return arrayList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listItem;
+        return arrayList;
     }
 
     @Override
@@ -46,57 +47,20 @@ public class Adapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View view, ViewGroup parent) {
-        if (view == null) {
-            view = LayoutInflater.from(parent.getContext()).inflate(idLayout, parent, false);
+    public View getView(final int position, View convertView, ViewGroup parent) {
+
+        ItemModel item = arrayList.get(position);
+
+        if(convertView == null){
+            convertView = LayoutInflater.from(context).inflate(idLayout,null);
         }
 
-        TextView tv_item = (TextView) view.findViewById(R.id.tv_item);
-        ImageView imageView = (ImageView) view.findViewById(R.id.logo);
-        final LinearLayout linearLayout = (LinearLayout) view.findViewById(R.id.idLinearLayout);
-        final ItemModel items = listItem.get(position);
+        ImageView img = convertView.findViewById(R.id.logo);
+        img.setImageResource(item.getId());
+        TextView txt = convertView.findViewById(R.id.tv_item);
+        txt.setText(item.getName());
 
-        if (listItem != null && !listItem.isEmpty()) {
-            tv_item.setText(items.getName());
-            int idItem = items.getId();
-            switch (idItem) {
-                case 1:
-                    imageView.setImageResource(R.drawable.ca_nau_lau);
-                    break;
-                case 2:
-                    imageView.setImageResource(R.drawable.ga_bo_toi);
-                    break;
-                case 3:
-                    imageView.setImageResource(R.drawable.do_choi_dang_mo_hinh);
-                    break;
-                case 4:
-                    imageView.setImageResource(R.drawable.xa_can_cau);
-                    break;
-                case 5:
-                    imageView.setImageResource(R.drawable.lanh_dao_gian_don);
-                    break;
-                case 6:
-                    imageView.setImageResource(R.drawable.hieu_long_con_tre);
-                    break;
-                default:
-                    break;
-            }
-        }
-//        convertView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(context, items.getName(), Toast.LENGTH_LONG).show();
-//                positionSelect = position;
-//                notifyDataSetChanged();
-//            }
-//        });
-
-        if (positionSelect == position) {
-            linearLayout.setBackgroundColor(Color.BLUE);
-        } else {
-            linearLayout.setBackgroundColor(Color.WHITE);
-        }
-        return view;
+        return convertView;
     }
 
 }
